@@ -4,7 +4,7 @@
     <div>
       Name: <input v-model="newPerson.name">
       Bio: <input v-model="newPerson.bio">
-      <button v-onLclick="addPerson()">Add Person</button>
+      <button v-on:click="addPerson()">Add Person</button>
     </div>
 
     <div v-for="person in people" >
@@ -50,8 +50,12 @@ export default {
   created: function() {},
   methods: {
     addPerson: function() {
-      
+      if (this.newPerson.name && this.newPerson.bio) {
+        this.people.push(this.newPerson)
+        this.newPerson = {name: "", bio: ""}
+      }
     }
-  }, computed: {}
+  }, 
+  computed: {}
 };
 </script>
