@@ -7,21 +7,27 @@
       <button v-on:click="addPerson()">Add Person</button>
     </div>
 
-    <div v-for="person in people" >
-      <h2 v-on:click="toggleBio(person)">{{ person.name }}</h2>
-      <p v-if="person.bioVisible">{{ person.bio }}</p>
-      <button v-on:click="removePerson(person)">Remove Person</button>
-    </div>
-
     <div>
-      <h2>Number of people: {{ people.length }}</h2>
+      <h4>Number of people: {{ people.length }}</h4>
     </div>
+    
+    <div v-for="person in people" >
+      <h2 @click="toggleBio(person)">{{ person.name }}</h2>
+      <div v-bind:class="{strike: person.bioVisible}">
+        <h3>{{ person.bio }}</h3>
+        <button @click="removePerson(person)">Remove Person</button>
+      </div>
+    </div>    
   </div>
 </template>
 
 <style>
   body {
     background-color: lightblue;
+  }
+
+  .strike {
+    text-decoration: line-through;
   }
 </style>
 
