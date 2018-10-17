@@ -8,11 +8,14 @@
     </div>
 
     <div v-for="person in people" >
-      <h2>{{ person.name }}</h2>
-      <p>{{ person.bio }}</p>
+      <h2 v-on:click="toggleBio(person)">{{ person.name }}</h2>
+      <p v-if="person.bioVisible">{{ person.bio }}</p>
+      <button v-on:click="removePerson(person)">Remove Person</button>
     </div>
 
-
+    <div>
+      <h2>Number of people: {{ people.length }}</h2>
+    </div>
   </div>
 </template>
 
@@ -28,32 +31,39 @@ export default {
     return {
       message: "Welcome to Vue.js!",
       people: [
-      {
-        name: "Kamina",
-        bio: "From Gurren Laggan",
-        bioVisible: true
-      },
-      {
-        name: "Naruto",
-        bio: "From Naruto",
-        bioVisible: true
-      },
-      {
-        name: "Ichigo",
-        bio: "From Bleach",
-        bioVisible: true
-      }
-    ],
-    newPerson: {name: "", bio: "", bioVisible: true}
-  };
-},
+        {
+          name: "Kamina",
+          bio: "From Gurren Laggan",
+          bioVisible: true
+        },
+        {
+          name: "Naruto",
+          bio: "From Naruto",
+          bioVisible: true
+        },
+        {
+          name: "Ichigo",
+          bio: "From Bleach",
+          bioVisible: true
+        }
+      ],
+      newPerson: {name: "", bio: "", bioVisible: true}
+    };
+  },
   created: function() {},
   methods: {
     addPerson: function() {
       if (this.newPerson.name && this.newPerson.bio) {
         this.people.push(this.newPerson)
-        this.newPerson = {name: "", bio: ""}
+        this.newPerson = {name: "", bio: "", bioVisible:true}
       }
+    },
+    toggleBio: function(inputPerson) {
+        inputPerson.bioVisible = !inputPerson.bioVisible
+    },
+    removePerson: function(inputPerson) {
+      var index = this.people.indexOf(inputPerson);
+      this.people.splice(index, 1)
     }
   }, 
   computed: {}
