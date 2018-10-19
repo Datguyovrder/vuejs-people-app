@@ -2,6 +2,10 @@
   <div class="home">
     <h1>Interesting People</h1>
 
+    <ul>
+      <li v-for="error in errors">{{ error }}</li>
+    </ul>
+
     <div>
       Name: <input v-model="newPerson.name">  
       Bio: <input v-model="newPerson.bio">
@@ -34,27 +38,45 @@ export default {
   data: function() {
     return {
       people: [],
-      newPerson: {name: "", bio: "", bioVisible: true}
+      newPerson: {name: "", bio: "", bioVisible: true},
+      errors: []
     };
   },
   created: function() {
     // console.log(this);
     axios
     .get("http://localhost:3000/api/people")
-    .then(function(response) {
+    .then(response => {
       this.people = response.data;
       // console.log(this);
-    }.bind(this));
+    });
   },
   methods: {
     toggleBio: function(inputPerson) {
       inputPerson.bioVisible = !inputPerson.bioVisible;
     },
     addPerson: function() {
-      if (this.newPerson.name && this.newPerson.bio) {
-        this.people.push(this.newPerson);
-        this.newPerson = {name: "", bio: "", bioVisible: true};
-      }
+      this.errors = [];
+
+      var params = {
+                    name: this.newPerson.name,
+                    bio: this.newPerson.bio
+                    };
+
+      axios
+      .post("http://localhost:3000/api/people", params)
+      .then(response => {
+        // console.log(response.data)
+        this.people.push(response.data);
+        this.newPerson = {name: "", bio: "", bioVisible: false};
+      })
+      .catch(error => {
+        console.log(error.response.data.errors);
+        this.error = error.response.data.errors;
+      });
+
+      
+      
     },
     deletePerson: function(inputPerson) {
       var index = this.people.indexOf(inputPerson);
