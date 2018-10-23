@@ -14,7 +14,7 @@
       <h4>Total Number of People: {{ people.length }}</h4>
     </div>
 
-    <div>
+    <div id="search-by-name">
       Search: <input v-model="nameFilter" list="names">
       <datalist id="names">
         <option v-for="person in people">{{ person.name }}</option>
@@ -26,8 +26,8 @@
       <button @click="setSortAttribute('bio')">Sort by Bio</button>
     </div>
 
-    <transition-group name="fade">
-      <div v-for="person in orderBy(filterBy(people, nameFilter, 'name'), sortAttribute, sortOrder)" v-bind.key="person.id">
+    <transition-group name="bounceDown">
+      <div v-for="person in orderBy(filterBy(people, nameFilter, 'name'), sortAttribute, sortOrder)" v-bind:key="person.id">
         <h2 @click="toggleBio(person)">{{ person.name }}</h2>
         <div v-if="person.bioVisible">
           <h3>{{ person.bio }}</h3>
@@ -39,16 +39,40 @@
 </template>
 
 <style>
+#search-by-name {
+  float: right;
+}
 .strike {
   text-decoration: line-through;
 }
-
+/* Vue.js fade */
 .fade-enter-active, .fade-leave-active {
-  transition: opacity .5s
+  transition: opacity 5s
 }
-
-.fadeenter, .fade-leave-to {
+.fade-enter, .fade-leave-to {
   opacity: 0
+}
+/* Vue.js slide-right */
+.slide-right-enter-active {
+  transition: all .8s ease;
+}
+.slide-right-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-right-enter, .slide-right-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+}
+/* Vue.js slide-left */
+.slide-left-enter-active {
+  transition: all .3s ease;
+}
+.slide-left-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-left-enter, .slide-left-leave-to {
+  transform: translateX(-10px);
+  opacity: 0;
 }
 </style>
 
