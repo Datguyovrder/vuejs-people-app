@@ -26,19 +26,29 @@
       <button @click="setSortAttribute('bio')">Sort by Bio</button>
     </div>
 
-    <div v-for="person in orderBy(filterBy(people, nameFilter, 'name'), sortAttribute, sortOrder)">
-      <h2 @click="toggleBio(person)">{{ person.name }}</h2>
-      <div v-if="person.bioVisible">
-        <h3>{{ person.bio }}</h3>
-        <button @click="deletePerson(person)">Delete</button>
+    <transition-group name="fade">
+      <div v-for="person in orderBy(filterBy(people, nameFilter, 'name'), sortAttribute, sortOrder)" v-bind.key="person.id">
+        <h2 @click="toggleBio(person)">{{ person.name }}</h2>
+        <div v-if="person.bioVisible">
+          <h3>{{ person.bio }}</h3>
+          <button @click="deletePerson(person)">Delete</button>
+        </div>
       </div>
-    </div>
+    </transition-group>
   </div>
 </template>
 
 <style>
 .strike {
   text-decoration: line-through;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+
+.fadeenter, .fade-leave-to {
+  opacity: 0
 }
 </style>
 
